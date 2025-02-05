@@ -71,21 +71,28 @@
         }
     </style>
     <script>
+        let data;
+        
+        fetch('data.json')
+            .then(response => response.json())
+            .then(json => data = json);
+        
         function checkCode() {
             let inputCode = document.getElementById("codeInput").value;
+            if (!data) {
+                alert("הנתונים עדיין נטענים, נסה שוב עוד רגע.");
+                return;
+            }
             
-            let firstList = ["1", "123", "456", "789", "abc"];
-            let secondList = ["sfdshdgf", "Apple", "Banana", "Cherry", "Dog"];
-            
-            let index = firstList.indexOf(inputCode);
+            let index = data.firstList.indexOf(inputCode);
             
             let popup = document.getElementById("popup");
             let resultText = document.getElementById("popupResult");
             
             if (index !== -1) {
-                resultText.innerText = "Result: " + secondList[index];
+                resultText.innerText = "User: " + data.secondList[index] + "\nCode: " + data.thirdList[index];
             } else {
-                resultText.innerText = "Code not found.";
+                resultText.innerText = "קוד לא נמצא.";
             }
             popup.style.display = "block";
             setTimeout(() => popup.classList.add("show"), 10);
@@ -99,13 +106,13 @@
     </script>
 </head>
 <body>
-    <h2>Enter a Code</h2>
-    <input type="text" id="codeInput" placeholder="Enter your code">
-    <button onclick="checkCode()">Submit</button>
+    <h2>הכנס שם</h2>
+    <input type="text" id="codeInput" placeholder="הכנס שם בעברית">
+    <button onclick="checkCode()">שלח</button>
     
     <div id="popup" class="popup">
         <p id="popupResult"></p>
-        <button onclick="closePopup()">Close</button>
+        <button onclick="closePopup()">סגור</button>
     </div>
 </body>
 </html>
